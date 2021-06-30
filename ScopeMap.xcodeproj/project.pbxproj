@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C605331268BAFA900B8A089 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C605330268BAFA900B8A089 /* MapView.swift */; };
+		7C605336268BB81D00B8A089 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C605335268BB81D00B8A089 /* LocationViewModel.swift */; };
 		7CE6B8D42686676300D792E4 /* ScopeMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6B8D32686676300D792E4 /* ScopeMapApp.swift */; };
 		7CE6B8D62686676300D792E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6B8D52686676300D792E4 /* ContentView.swift */; };
 		7CE6B8D82686676500D792E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CE6B8D72686676500D792E4 /* Assets.xcassets */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C605330268BAFA900B8A089 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		7C605335268BB81D00B8A089 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		7CE6B8D02686676200D792E4 /* ScopeMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScopeMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CE6B8D32686676300D792E4 /* ScopeMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeMapApp.swift; sourceTree = "<group>"; };
 		7CE6B8D52686676300D792E4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7C605334268BB7FD00B8A089 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7C605335268BB81D00B8A089 /* LocationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		7CE6B8C72686676200D792E4 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +97,7 @@
 		7CE6B8D22686676300D792E4 /* ScopeMap */ = {
 			isa = PBXGroup;
 			children = (
+				7C605334268BB7FD00B8A089 /* ViewModels */,
 				7CE6B92B268B2B0700D792E4 /* Views */,
 				7CE6B8D32686676300D792E4 /* ScopeMapApp.swift */,
 				7CE6B9042686684500D792E4 /* NetworkManager.swift */,
@@ -120,6 +133,7 @@
 			children = (
 				7CE6B8D52686676300D792E4 /* ContentView.swift */,
 				7CE6B91E2688C85A00D792E4 /* AsyncImage.swift */,
+				7C605330268BAFA900B8A089 /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,11 +238,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CE6B90F26866AA500D792E4 /* JSONModel.swift in Sources */,
+				7C605331268BAFA900B8A089 /* MapView.swift in Sources */,
 				7CE6B9052686684500D792E4 /* NetworkManager.swift in Sources */,
 				7CE6B91B2688C5F700D792E4 /* ImageLoader.swift in Sources */,
 				7CE6B90A268668A600D792E4 /* NetworkError.swift in Sources */,
 				7CE6B8D62686676300D792E4 /* ContentView.swift in Sources */,
 				7CE6B91F2688C85A00D792E4 /* AsyncImage.swift in Sources */,
+				7C605336268BB81D00B8A089 /* LocationViewModel.swift in Sources */,
 				7CE6B8D42686676300D792E4 /* ScopeMapApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
