@@ -9,7 +9,41 @@ import Foundation
 import Combine
 import CoreLocation
 
-class VehicleManager: ObservableObject {
+class Loader<CachedObject>: ObservableObject {
+
+    var isLoading = false
+    var url: URL?
+    var cancellable: AnyCancellable?
+    var cache: Cache<NSURL, CachedObject>?
+
+    init(urlString: String, cache: Cache<NSURL, CachedObject>? = nil) {
+        self.url = URL(string: urlString)
+        self.cache = cache
+    }
+
+    deinit {
+        cancel()
+    }
+
+    func cancel() {
+        cancellable?.cancel()
+    }
+
+    func onStart() {
+        isLoading = true
+    }
+
+    func onFinish() {
+        isLoading = false
+    }
+
+    func cache(_ object: CachedObject?) {
+        guard let url = url else { return }
+        object.map { cache?[url as NSURL] = $0 }
+    }
+}
+
+class VehicleManager: Loader<[VehicleDescription]> {
     @Published var vehicles = [VehicleDescription]() {
         didSet {
             if vehicles.allSatisfy({ $0.coordinates != nil }) {
@@ -22,18 +56,14 @@ class VehicleManager: ObservableObject {
     @Published var errorMessage: String?
     @Published var coordinatesLoaded = false
 
-    private var url: URL?
-    private var cancellable: AnyCancellable?
     private static let vehicleLoadingQueue = DispatchQueue(label: "vehicle-processing")
-    private var cache: Cache<NSURL, [VehicleDescription]>?
     private var dataTimer = DataTimer()
-    private(set) var isLoading = false
 
     init(id: Int, vehicleInfo: [Vehicle], cache: Cache<NSURL, [VehicleDescription]>) {
+
         let urlString = "http://mobi.connectedcar360.net/api/?op=getlocations&userid=\(id)"
-        guard let url = URL(string: urlString) else { return }
-        self.url = url
-        self.cache = cache
+        super.init(urlString: urlString, cache: cache)
+
         dataTimer.timeInterval = TimeInterval(60)
         
         vehicleInfo.forEach {
@@ -76,8 +106,9 @@ class VehicleManager: ObservableObject {
                         if vehicle.vehicleId == vehicleInfo.vehicleid {
                             let lat = CLLocationDegrees(vehicleInfo.lat)
                             let lon = CLLocationDegrees(vehicleInfo.lon)
+                            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
 
-                            vehicle.coordinates = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+                            vehicle.coordinates = coordinate
                         }
                     }
                     
@@ -109,7 +140,28 @@ class VehicleManager: ObservableObject {
                         self?.errorMessage = "Something went wrong"
                 }
             }, receiveValue: { [weak self] in
-                self?.vehicles = $0
+
+                guard let self = self else { return }
+
+                self.vehicles = $0 ?? []
+
+                let myGroup = DispatchGroup()
+
+                var transports = [VehicleDescription]()
+
+                self.vehicles.forEach { veh in
+                        myGroup.enter()
+                        LocationManagerModel.getAddressFrom(coordinate: veh.coordinates) {
+                            var vehicle = veh
+                            vehicle.currentAddress = $0
+                            transports.append(vehicle)
+                            myGroup.leave()
+                        }
+                    }
+
+                myGroup.notify(queue: .main) {
+                    self.vehicles = transports
+                }
             })
     }
     
@@ -119,25 +171,8 @@ class VehicleManager: ObservableObject {
         }
     }
     
-    func cancel() {
-        cancellable?.cancel()
-    }
-    
     func ignoreError() {
         errorMessage = nil
         dataTimer.timer.invalidate()
-    }
-    
-    private func onStart() {
-        isLoading = true
-    }
-    
-    private func onFinish() {
-        isLoading = false
-    }
-    
-    private func cache(_ image: [VehicleDescription]?) {
-        guard let url = url else { return }
-        image.map { cache?[url as NSURL] = $0 }
     }
 }

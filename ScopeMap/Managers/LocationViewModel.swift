@@ -31,19 +31,20 @@ class LocationManagerModel: NSObject, ObservableObject, CLLocationManagerDelegat
         authorizationStatus = manager.authorizationStatus
     }
     
-    static func getAddressFrom(coordinate: CLLocationCoordinate2D, completion: @escaping (String) -> ()) {
+    static func getAddressFrom(coordinate: CLLocationCoordinate2D?, completion: @escaping (String?) -> ()) {
         let geoLocation: CLGeocoder = CLGeocoder()
+
+        guard let coordinate = coordinate else { return completion("Unknown Address") }
         
         let location: CLLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
-        geoLocation.reverseGeocodeLocation(location, completionHandler: { (placeMarks, _) in
+        geoLocation.reverseGeocodeLocation(location, completionHandler: { (placeMarks, error) in
             
             guard let placeMarks = placeMarks,
                   let placeMark = placeMarks.first,
-                  let thoroughfare = placeMark.thoroughfare,
-                  let subThoroughfare = placeMark.subThoroughfare else { return }
+                  let thoroughfare = placeMark.thoroughfare else { return completion(error.debugDescription) }
             
-            let addressString = "\(thoroughfare) \(subThoroughfare)"
+            let addressString = "\(thoroughfare) \(placeMark.subThoroughfare ?? "")"
             completion(addressString)
         })
     }

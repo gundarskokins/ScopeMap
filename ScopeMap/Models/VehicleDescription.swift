@@ -15,17 +15,5 @@ struct VehicleDescription: Identifiable {
     var vehicleName: String
     var color: String
     var currentAddress: String?
-    var coordinates: CLLocationCoordinate2D? {
-        didSet {
-            if let coordinates = coordinates {
-                getAddress(from: coordinates)
-            }
-        }
-    }
-    
-    mutating func getAddress(from coordinates: CLLocationCoordinate2D) {
-        LocationManagerModel.getAddressFrom(coordinate: coordinates) { _ in
-            //            currentAddress = $0
-        }
-    }
+    var coordinates: CLLocationCoordinate2D?
 }
