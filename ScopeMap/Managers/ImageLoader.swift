@@ -19,7 +19,7 @@ class ImageLoader: ObservableObject {
     private var cache: Cache<NSURL, UIImage>?
     private var cancellable: AnyCancellable?
     
-    private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
+    private static let processingQueue = DispatchQueue(label: "image-processing")
     
     init(url: String, cache: Cache<NSURL, UIImage>? = nil) {
         let urlString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -47,7 +47,7 @@ class ImageLoader: ObservableObject {
                           receiveOutput: { [weak self] in self?.cache($0) },
                           receiveCompletion: { [weak self] _ in self?.onFinish() },
                           receiveCancel: { [weak self] in self?.onFinish() })
-            .subscribe(on: Self.imageProcessingQueue)
+            .subscribe(on: Self.processingQueue)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.image = $0 }
     }
@@ -67,25 +67,5 @@ class ImageLoader: ObservableObject {
     private func cache(_ image: UIImage?) {
         guard let url = url else { return }
         image.map { cache?[url as NSURL] = $0 }
-    }
-}
-
-struct ImageCacheKey: EnvironmentKey {
-    static let defaultValue: Cache = Cache<NSURL, UIImage>()
-}
-
-struct VehicleCacheKey: EnvironmentKey {
-    static let defaultValue: Cache = Cache<NSURL, [VehicleDescription]>(entryLifetime: 30)
-}
-
-extension EnvironmentValues {
-    var imageCache: Cache<NSURL, UIImage> {
-        get { self[ImageCacheKey.self] }
-        set { self[ImageCacheKey.self] = newValue }
-    }
-    
-    var vehicleLocationCache: Cache<NSURL, [VehicleDescription]> {
-        get { self[VehicleCacheKey.self] }
-        set { self[VehicleCacheKey.self] = newValue }
     }
 }

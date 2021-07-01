@@ -20,23 +20,6 @@ struct ContentView: View {
                             CellImageView(urlString: item.owner.foto)
                             
                             Text("\(item.owner.name ) \(item.owner.surname )")
-//                            DisclosureGroup(
-//                                content: {
-//                                    ForEach(item.vehicles, id: \.vehicleid) { vehicle in
-//
-//                                        HStack {
-//                                            CellImageView(urlString: vehicle.foto)
-//
-//                                            Text("\(vehicle.make) \(vehicle.model)")
-//                                        }
-//
-//                                    }
-//                                },
-//                                label: {
-//                                    CellImageView(urlString: item.owner.foto)
-//
-//                                    Text("\(item.owner.name ) \(item.owner.surname )")
-//                                })
                         })
                 }
             }

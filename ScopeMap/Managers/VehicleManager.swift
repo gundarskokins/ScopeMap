@@ -78,11 +78,6 @@ class VehicleManager: ObservableObject {
                             let lon = CLLocationDegrees(vehicleInfo.lon)
 
                             vehicle.coordinates = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-                            if let coordinates = vehicle.coordinates {
-                                LocationManagerModel.getAddressFrom(coordinate: coordinates) {
-                                    vehicle.currentAddress = $0
-                                }
-                            }
                         }
                     }
                     
@@ -146,17 +141,3 @@ class VehicleManager: ObservableObject {
         image.map { cache?[url as NSURL] = $0 }
     }
 }
-
-struct VehicleDescription: Identifiable {
-    var id = UUID()
-    var vehicleId: Int
-    var vehicleImage: String
-    var vehicleName: String
-    var color: String
-    var currentAddress: String?
-    var coordinates: CLLocationCoordinate2D?
-}
-
-
-
-

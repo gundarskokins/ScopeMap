@@ -37,58 +37,6 @@ extension NetworkProtocol {
     }
 }
 
-class DataManager: ObservableObject {
-    @Published var errorMessage: String?
-    @Published var dataModel: DataModel? 
-    private var dataNetworkManager = DataNetworkManager()
-    private var dataTimer = DataTimer()
-
-    init() {
-        loadDataFromNetwork()
-        startDataTimer()
-    }
-    
-    func loadDataFromNetwork() {
-        self.dataNetworkManager.loadData { receivedData in
-            DispatchQueue.main.async {
-                switch receivedData {
-                    case .success(let model):
-                        self.dataModel = model
-                    case .failure(let error):
-                        self.errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
-    
-    private func startDataTimer() {
-        dataTimer.startSpecsHeartbeatTimer {
-            self.loadDataFromNetwork()
-        }
-    }
-}
-
-class DataTimer {
-    var timer = Timer()
-    var timeInterval = TimeInterval(86400)
-//    private var configurationTimerTriggered: TimeInterval?
-    
-    func startSpecsHeartbeatTimer(block: @escaping ()->()) {
-        timer.invalidate()
-        triggerConfigurationTimer(block: block)
-    }
-
-    private func triggerConfigurationTimer(block: @escaping ()->()) {
-        DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: self.timeInterval,
-                                              repeats: true,
-                                              block: { _ in
-                                                block()
-                                              })
-        }
-    }
-}
-
 class DataNetworkManager: NetworkProtocol, ObservableObject {
     var urlSessionConfiguration: URLSessionConfiguration? {
         let configuration = URLSessionConfiguration.default
