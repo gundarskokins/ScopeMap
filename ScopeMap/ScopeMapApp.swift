@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct ScopeMapApp: App {
     @StateObject private var dataManager = DataManager()
+
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -9,29 +9,34 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var dataManager: DataManager
+    
     var body: some View {
         NavigationView {
             Form {
                 ForEach(dataManager.dataModel?.data ?? [], id: \.userid) { item in
-                    DisclosureGroup(
-                        content: {
-                            ForEach(item.vehicles, id: \.vehicleid) { vehicle in
-                                NavigationLink(
-                                    destination: MapView(),
-                                    label: {
-                                        HStack {
-                                            CellImageView(urlString: vehicle.foto)
-                                            
-                                            Text("\(vehicle.make) \(vehicle.model)")
-                                        }
-                                    })
-                                
-                            }
-                        },
+                    NavigationLink(
+                        destination: MapView(userId: item.userid, vehicleInfo: item.vehicles),
                         label: {
                             CellImageView(urlString: item.owner.foto)
                             
                             Text("\(item.owner.name ) \(item.owner.surname )")
+//                            DisclosureGroup(
+//                                content: {
+//                                    ForEach(item.vehicles, id: \.vehicleid) { vehicle in
+//
+//                                        HStack {
+//                                            CellImageView(urlString: vehicle.foto)
+//
+//                                            Text("\(vehicle.make) \(vehicle.model)")
+//                                        }
+//
+//                                    }
+//                                },
+//                                label: {
+//                                    CellImageView(urlString: item.owner.foto)
+//
+//                                    Text("\(item.owner.name ) \(item.owner.surname )")
+//                                })
                         })
                 }
             }

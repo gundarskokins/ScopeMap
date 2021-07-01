@@ -31,3 +31,14 @@ struct Vehicle: Codable {
     let vin: String
     let foto: String
 }
+
+// MARK: - VehicleData
+struct VehicleData: Codable {
+    let data: [VehicleInfo]
+}
+
+// MARK: - VehicleInfo
+struct VehicleInfo: Codable {
+    let vehicleid: Int
+    let lat, lon: Double
+}

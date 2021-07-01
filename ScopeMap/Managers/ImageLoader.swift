@@ -10,35 +10,18 @@ import SwiftUI
 import UIKit
 import Combine
 
-protocol ImageCache {
-    subscript(_ url: URL) -> UIImage? { get set }
-}
-
-struct TemporaryImageCache: ImageCache {
-    private let cache = NSCache<NSURL, UIImage>()
-    
-    subscript(_ key: URL) -> UIImage? {
-        get { cache.object(forKey: key as NSURL) }
-        set { if let newValue = newValue {
-            cache.setObject(newValue, forKey: key as NSURL)
-        } else {
-            cache.removeObject(forKey: key as NSURL)
-        }}
-    }
-}
-
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
     private(set) var isLoading = false
     
     private var url: URL?
-    private var cache: ImageCache?
+    private var cache: Cache<NSURL, UIImage>?
     private var cancellable: AnyCancellable?
     
     private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
-    init(url: String, cache: ImageCache? = nil) {
+    init(url: String, cache: Cache<NSURL, UIImage>? = nil) {
         let urlString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         guard let url = URL(string: urlString) else { return }
         self.url = url
@@ -52,7 +35,7 @@ class ImageLoader: ObservableObject {
     func load() {
         guard !isLoading, let url = url else { return }
         
-        if let image = cache?[url] {
+        if let image = cache?[url as NSURL] {
             self.image = image
             return
         }
@@ -83,17 +66,26 @@ class ImageLoader: ObservableObject {
     
     private func cache(_ image: UIImage?) {
         guard let url = url else { return }
-        image.map { cache?[url] = $0 }
+        image.map { cache?[url as NSURL] = $0 }
     }
 }
 
 struct ImageCacheKey: EnvironmentKey {
-    static let defaultValue: ImageCache = TemporaryImageCache()
+    static let defaultValue: Cache = Cache<NSURL, UIImage>()
+}
+
+struct VehicleCacheKey: EnvironmentKey {
+    static let defaultValue: Cache = Cache<NSURL, [VehicleDescription]>(entryLifetime: 30)
 }
 
 extension EnvironmentValues {
-    var imageCache: ImageCache {
+    var imageCache: Cache<NSURL, UIImage> {
         get { self[ImageCacheKey.self] }
         set { self[ImageCacheKey.self] = newValue }
+    }
+    
+    var vehicleLocationCache: Cache<NSURL, [VehicleDescription]> {
+        get { self[VehicleCacheKey.self] }
+        set { self[VehicleCacheKey.self] = newValue }
     }
 }

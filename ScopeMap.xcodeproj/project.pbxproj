@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C086562268C85A100A7C4AA /* VehicleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C086561268C85A100A7C4AA /* VehicleManager.swift */; };
+		7C086566268CA12500A7C4AA /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C086565268CA12500A7C4AA /* Cache.swift */; };
 		7C605331268BAFA900B8A089 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C605330268BAFA900B8A089 /* MapView.swift */; };
 		7C605336268BB81D00B8A089 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C605335268BB81D00B8A089 /* LocationViewModel.swift */; };
 		7CE6B8D42686676300D792E4 /* ScopeMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6B8D32686676300D792E4 /* ScopeMapApp.swift */; };
@@ -32,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C086561268C85A100A7C4AA /* VehicleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleManager.swift; sourceTree = "<group>"; };
+		7C086565268CA12500A7C4AA /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		7C605330268BAFA900B8A089 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		7C605335268BB81D00B8A089 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		7CE6B8D02686676200D792E4 /* ScopeMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScopeMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,12 +72,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7C605334268BB7FD00B8A089 /* ViewModels */ = {
+		7C605334268BB7FD00B8A089 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				7C605335268BB81D00B8A089 /* LocationViewModel.swift */,
+				7CE6B9042686684500D792E4 /* NetworkManager.swift */,
+				7CE6B91A2688C5F600D792E4 /* ImageLoader.swift */,
+				7C086561268C85A100A7C4AA /* VehicleManager.swift */,
+				7C086565268CA12500A7C4AA /* Cache.swift */,
 			);
-			path = ViewModels;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		7CE6B8C72686676200D792E4 = {
@@ -97,13 +105,11 @@
 		7CE6B8D22686676300D792E4 /* ScopeMap */ = {
 			isa = PBXGroup;
 			children = (
-				7C605334268BB7FD00B8A089 /* ViewModels */,
+				7C605334268BB7FD00B8A089 /* Managers */,
 				7CE6B92B268B2B0700D792E4 /* Views */,
 				7CE6B8D32686676300D792E4 /* ScopeMapApp.swift */,
-				7CE6B9042686684500D792E4 /* NetworkManager.swift */,
 				7CE6B90E26866AA500D792E4 /* JSONModel.swift */,
 				7CE6B909268668A600D792E4 /* NetworkError.swift */,
-				7CE6B91A2688C5F600D792E4 /* ImageLoader.swift */,
 				7CE6B8D72686676500D792E4 /* Assets.xcassets */,
 				7CE6B8DC2686676500D792E4 /* Info.plist */,
 				7CE6B8D92686676500D792E4 /* Preview Content */,
@@ -239,7 +245,9 @@
 			files = (
 				7CE6B90F26866AA500D792E4 /* JSONModel.swift in Sources */,
 				7C605331268BAFA900B8A089 /* MapView.swift in Sources */,
+				7C086562268C85A100A7C4AA /* VehicleManager.swift in Sources */,
 				7CE6B9052686684500D792E4 /* NetworkManager.swift in Sources */,
+				7C086566268CA12500A7C4AA /* Cache.swift in Sources */,
 				7CE6B91B2688C5F700D792E4 /* ImageLoader.swift in Sources */,
 				7CE6B90A268668A600D792E4 /* NetworkError.swift in Sources */,
 				7CE6B8D62686676300D792E4 /* ContentView.swift in Sources */,
@@ -391,6 +399,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ScopeMap/Preview Content\"";
+				DEVELOPMENT_TEAM = 86T3GM4BW6;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ScopeMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -412,6 +421,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ScopeMap/Preview Content\"";
+				DEVELOPMENT_TEAM = 86T3GM4BW6;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ScopeMap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

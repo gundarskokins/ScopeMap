@@ -70,8 +70,8 @@ class DataManager: ObservableObject {
 
 class DataTimer {
     var timer = Timer()
-    private var timeInterval = TimeInterval(86400)
-    private var configurationTimerTriggered: TimeInterval?
+    var timeInterval = TimeInterval(86400)
+//    private var configurationTimerTriggered: TimeInterval?
     
     func startSpecsHeartbeatTimer(block: @escaping ()->()) {
         timer.invalidate()
@@ -88,21 +88,6 @@ class DataTimer {
         }
     }
 }
-
-//struct DataStorage {
-//    func fetchFromStorage(_ requirementsVersion: String) {
-//        if let value = UserDefaults.standard.object(forKey: "scopeJSON") as? [String: Any] {
-//            var data: [String: Any] {
-//                if let data = value["data"] as? [String: Any] {
-//                    return data
-//                }
-//                return [:]
-//            }
-//
-//            setData(data, "cache")
-//        }
-//    }
-//}
 
 class DataNetworkManager: NetworkProtocol, ObservableObject {
     var urlSessionConfiguration: URLSessionConfiguration? {
