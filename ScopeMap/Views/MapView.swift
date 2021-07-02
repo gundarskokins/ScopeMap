@@ -15,6 +15,8 @@ struct MapView: View {
     
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 56.946285, longitude: 24.105078), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     
+    @State private var selectedItem: VehicleDescription?
+    
     init(userId: Int, vehicleInfo: [Vehicle]) {
         _vehicleManager = StateObject(wrappedValue: VehicleManager(id: userId,
                                                                    vehicleInfo: vehicleInfo,
@@ -29,13 +31,14 @@ struct MapView: View {
                 MapAnnotation(coordinate: item.coordinates!) {
                     Button {
                         showingSheet = true
+                        selectedItem = item
                     } label: {
                         Circle()
                             .foregroundColor(.red)
                             .frame(width: 30, height: 30)
                     }
                     .sheet(isPresented: $showingSheet) {
-                        ItemView(vehicleDescription: item)
+                        ItemView(vehicleDescription: selectedItem ?? item)
                     }
                 }
             }
